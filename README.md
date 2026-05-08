@@ -1,38 +1,59 @@
 # Project Memory Skill
 
-一个 Claude Code skill，在每个项目根目录下维护 `MEMORY/` 文件夹，实现跨会话的项目长期记忆。
+> **Persist completed work, bugs, and todos across Claude Code / Cursor sessions.**  
+> 跨会话保留已完成工作、Bug 和待办事项，让 AI 记住每个项目的上下文。
 
-## 文件结构
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+---
+
+## What is this? / 这是什么？
+
+A skill for Claude Code (also works with Cursor) that maintains `MEMORY/` folder in your project root:
 
 ```
 <project-root>/
   MEMORY/
-    completed.md    # 已完成工作概览（只追加，按日期分区）
-    bugs.md         # Bug 记录（可追加，可更新状态 tag）
-    todo.md         # 待办事项（每次更新时完整重排）
+    completed.md    # Done work (append-only, by date)
+    bugs.md         # Bug log (with [fixed]/[pending] tags)
+    todo.md         # Todo list (reorganized on each update)
 ```
 
-## 安装
+**Three conversational commands** — tell your AI assistant these, and it follows the steps in `SKILL.md`:
 
-将 `project-memory/` 放入 `~/.claude/skills/`，或通过 Skill 工具直接加载 `SKILL.md`。
+| Command | When | What it does |
+|---------|------|-------------|
+| `/create memory` | After first session | Initialize all 3 files |
+| `/update memory` | After subsequent sessions | Append completed/bugs, reorganize todo |
+| `/read memory` | At session start | Load context from all 3 files |
 
-## 命令
+> **⚠️ These are semantic commands, not built-in slash commands.**  
+> When you say `/create memory` to Claude, it reads the instructions in SKILL.md and performs the corresponding file operations. No plugin or extension needed — just tell your AI.
 
-| 命令 | 时机 | 行为 |
-|------|------|------|
-| `/create memory` | 新项目第一次会话结束时 | 创建 MEMORY 文件夹及三个文件 |
-| `/update memory` | 后续会话结束时 | 追加 completed/bugs，重排 todo |
-| `/read memory` | 会话开始时 | 读取三个文件作为工作上下文 |
+---
 
-## 使用流程
+## Quick Start / 快速开始
 
-1. 新项目第一次会话结束 → `/create memory`
-2. 下次会话开始 → `/read memory`（加载上下文）
-3. 会话结束 → `/update memory`（更新记录）
-4. 重复步骤 2-3
+1. Copy this folder to `~/.claude/skills/project-memory/`
+2. In a Claude Code session, use the **Skill** tool to load `project-memory`
+3. At the end of your first project session, say: **"/create memory"**
+4. Next session, start with: **"/read memory"**
+5. End each session with: **"/update memory"**
 
-## 辅助脚本
+For full command details and file templates → see [SKILL.md](SKILL.md).
 
-`scripts/read_completed.py` — 智能读取 `completed.md`：
-- 全文 ≤ 40 行 → 直接输出
-- 全文 > 40 行 → 旧内容摘要 + 最近 3 次会话完整条目
+---
+
+## Smart Truncation / 智能截断
+
+`scripts/read_completed.py` handles long `completed.md`:
+- ≤ 40 lines → full output
+- > 40 lines → last 3 sessions in full + summary of older content
+
+Saves tokens while keeping recent context intact.
+
+---
+
+## License
+
+MIT
