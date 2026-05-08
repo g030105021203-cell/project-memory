@@ -2,9 +2,12 @@
 name: project-memory
 description: Use when starting a new Claude Code session in an existing project, when wrapping up work that should be preserved across sessions, or when you see a MEMORY folder in the project root
 commands:
-  create-memory: 创建 MEMORY/completed.md bugs.md todo.md
-  update-memory: 更新 MEMORY 三个文件（completed 追加、bugs 追加、todo 重排）
-  read-memory: 读取 MEMORY 三个文件作为工作上下文
+  - name: create-memory
+    description: 创建 MEMORY/completed.md bugs.md todo.md
+  - name: update-memory
+    description: 更新 MEMORY 三个文件（completed 追加、bugs 追加、todo 重排）
+  - name: read-memory
+    description: 读取 MEMORY 三个文件作为工作上下文
 ---
 
 # Project Memory Skill
