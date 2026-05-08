@@ -1,11 +1,33 @@
 ---
 name: project-memory
 description: Use when managing long-term project memory across Claude Code sessions — create/update/read MEMORY folder with completed work, bugs, and todo items for project continuity
+commands:
+  create memory: 创建 MEMORY 文件夹（completed.md / bugs.md / todo.md）—— 新项目第一次会话结束时使用
+  update memory: 更新 MEMORY 三个文件 —— 第二次及以后的会话结束时使用
+  read memory: 读取 MEMORY 三个文件 —— 会话开始时加载项目上下文
 ---
 
 # Project Memory Skill
 
 在项目根目录下维护 `MEMORY/` 文件夹，记录已完成工作、Bug 和待办事项，实现跨会话的项目记忆。
+
+## 安装
+
+将 `project-memory/` 整个文件夹放入 `~/.claude/skills/`（或其他 Claude Code 可发现的位置），然后在会话中通过 `Skill` 工具加载本 skill，或直接使用下方三个 slash 命令。
+
+## 使用流程
+
+```mermaid
+flowchart LR
+    A[项目第一次会话结束] --> B[/create memory]
+    B --> C[MEMORY 文件夹已就绪]
+    C --> D[下次会话开始]
+    D --> E[/read memory]
+    E --> F[基于记忆工作]
+    F --> G[会话结束]
+    G --> H[/update memory]
+    H --> D
+```
 
 ## 文件模板
 
@@ -112,7 +134,7 @@ description: Use when managing long-term project memory across Claude Code sessi
    - `bugs.md` — 全文直接读取
    - `todo.md` — 全文直接读取
    - `completed.md` — 调用脚本智能读取：
-     - 如果 `E:\memory skill\scripts\read_completed.py` 存在，用脚本处理
+     - 如果 `scripts/read_completed.py` 存在（与本 SKILL.md 同目录），用脚本处理
      - 如果脚本不存在或出错，全文直接读取
 4. 将合并结果作为本次工作的上下文
 
@@ -120,6 +142,6 @@ description: Use when managing long-term project memory across Claude Code sessi
 
 ## 注意事项
 
+- `scripts/read_completed.py` 脚本与本 SKILL.md 同目录，无需安装额外依赖
 - 所有文件使用 Markdown 格式，UTF-8 编码
 - 日期格式统一为 `YYYY-MM-DD`
-- `read_completed.py` 脚本位于 `E:\memory skill\scripts\read_completed.py`，无需安装额外依赖
