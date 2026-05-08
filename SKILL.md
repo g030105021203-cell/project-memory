@@ -7,6 +7,8 @@ description: Use when starting a new Claude Code session in an existing project,
 
 跨会话保留已完成工作、Bug 和待办事项，避免每个新会话都从零开始。
 
+> `/create memory`、`/update memory`、`/read memory` 是**人为约定的语义命令**，并非 Claude Code / Cursor 内置的斜杠指令。你对 AI 说出这些命令时，AI 会按照下文对应步骤执行文件读写和脚本调用。
+
 ## When to Use
 
 - 进入已有项目的新会话，需要上次工作的上下文
@@ -60,6 +62,8 @@ description: Use when starting a new Claude Code session in an existing project,
 
 永不修改或删除旧内容。
 
+> `⚠️` 日期标题必须为 `## YYYY-MM-DD` 格式（如 `## 2026-05-09`）。`read_completed.py` 依赖此格式做会话分割，改格式会导致截断错位。文件开头可有一段非日期说明文字，不会影响分割。
+
 ### bugs.md（追加 + 状态 tag）
 
 ```markdown
@@ -71,6 +75,8 @@ description: Use when starting a new Claude Code session in an existing project,
 ```
 
 可追加新 Bug，可更新已有 Bug 的 `[已修复]` / `[待修复]` tag。
+
+> `💡` 标记为 `[待修复]` 的 Bug 建议同时在 `todo.md` 中有一条对应任务，避免遗漏。
 
 ### todo.md（完整重排）
 
