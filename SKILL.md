@@ -1,13 +1,19 @@
 ---
 name: project-memory
 description: Use when starting a new Claude Code session in an existing project, when wrapping up work that should be preserved across sessions, or when you see a MEMORY folder in the project root
+commands:
+  create-memory: 创建 MEMORY/completed.md bugs.md todo.md
+  update-memory: 更新 MEMORY 三个文件（completed 追加、bugs 追加、todo 重排）
+  read-memory: 读取 MEMORY 三个文件作为工作上下文
 ---
 
 # Project Memory Skill
 
 跨会话保留已完成工作、Bug 和待办事项，避免每个新会话都从零开始。
 
-> `/create memory`、`/update memory`、`/read memory` 是**人为约定的语义命令**，并非 Claude Code / Cursor 内置的斜杠指令。你对 AI 说出这些命令时，AI 会按照下文对应步骤执行文件读写和脚本调用。
+**两种使用方式：**
+- **CLI 命令：** 直接输入 `/create-memory`、`/update-memory`、`/read-memory`
+- **语义指令：** 对 AI 说"帮我运行 /create memory"，AI 也能理解并执行相同步骤
 
 ## When to Use
 
@@ -21,13 +27,13 @@ description: Use when starting a new Claude Code session in an existing project,
 
 | 命令 | 时机 | 产出 |
 |------|------|------|
-| `/create memory` | 新项目第一次会话结束时 | 创建 `MEMORY/completed.md` + `bugs.md` + `todo.md` |
-| `/update memory` | 后续会话结束时 | 追加 completed/bugs，重排 todo |
-| `/read memory` | 会话开始时 | 读取三个文件作为工作上下文 |
+| `/create-memory` | 新项目第一次会话结束时 | 创建 `MEMORY/completed.md` + `bugs.md` + `todo.md` |
+| `/update-memory` | 后续会话结束时 | 追加 completed/bugs，重排 todo |
+| `/read-memory` | 会话开始时 | 读取三个文件作为工作上下文 |
 
 ## Commands
 
-### /create memory
+### /create-memory
 
 第一次会话结束时创建 MEMORY。在 `CWD/MEMORY/` 下生成三个文件，根据本次会话内容填充。如 `MEMORY/` 已存在则不覆盖。
 
@@ -37,11 +43,13 @@ description: Use when starting a new Claude Code session in an existing project,
 [已创建] MEMORY/todo.md (5 项待办)
 ```
 
-### /update memory
+你也可以对 AI 说"帮我运行 /create memory"，效果相同。
 
-读取现有三个文件，追加本次会话新内容。`completed.md` 和 `bugs.md` 只追加不删改旧内容；**`todo.md` 完整重排**（移除已完成、新增、调优先级）。如 MEMORY 不存在则提示先运行 `/create memory`。
+### /update-memory
 
-### /read memory
+读取现有三个文件，追加本次会话新内容。`completed.md` 和 `bugs.md` 只追加不删改旧内容；**`todo.md` 完整重排**（移除已完成、新增、调优先级）。如 MEMORY 不存在则提示先运行 `/create-memory`。
+
+### /read-memory
 
 读取 `CWD/MEMORY/` 下三个文件：
 - `bugs.md` / `todo.md` — 全文读取
@@ -87,11 +95,11 @@ description: Use when starting a new Claude Code session in an existing project,
 - [ ] 任务
 ```
 
-每次 `/update memory` 时整份重排，优先级动态调整。
+每次 `/update-memory` 时整份重排，优先级动态调整。
 
 ## Common Mistakes
 
-- **在会话中间用 /create memory 覆盖已有 MEMORY** — 只应在第一次会话结束时使用。之后始终用 `/update memory`
-- **手动编辑 todo.md** — AI 每次 `/update memory` 时会完整重排 todo.md，手动编辑会被覆盖
+- **在会话中间用 /create-memory 覆盖已有 MEMORY** — 只应在第一次会话结束时使用。之后始终用 `/update-memory`
+- **手动编辑 todo.md** — AI 每次 `/update-memory` 时会完整重排 todo.md，手动编辑会被覆盖
 - **completed.md 太长不处理** — 脚本会自动截断，确保拿到最近 3 次会话的完整条目 + 旧内容摘要
-- **忘了 /read memory 就开工** — 先在项目根目录运行 `/read memory` 加载上下文再开始工作
+- **忘了 /read-memory 就开工** — 先在项目根目录运行 `/read-memory` 加载上下文再开始工作

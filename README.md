@@ -19,16 +19,15 @@ A skill for Claude Code (also works with Cursor) that maintains `MEMORY/` folder
     todo.md         # Todo list (reorganized on each update)
 ```
 
-**Three conversational commands** — tell your AI assistant these, and it follows the steps in `SKILL.md`:
+**Three CLI commands** (type them directly at the prompt):
 
 | Command | When | What it does |
 |---------|------|-------------|
-| `/create memory` | After first session | Initialize all 3 files |
-| `/update memory` | After subsequent sessions | Append completed/bugs, reorganize todo |
-| `/read memory` | At session start | Load context from all 3 files |
+| `/create-memory` | After first session | Initialize all 3 files |
+| `/update-memory` | After subsequent sessions | Append completed/bugs, reorganize todo |
+| `/read-memory` | At session start | Load context from all 3 files |
 
-> **⚠️ These are semantic commands, not built-in slash commands.**  
-> When you say `/create memory` to Claude, it reads the instructions in SKILL.md and performs the corresponding file operations. No plugin or extension needed — just tell your AI.
+> You can also say "run /create memory" to your AI — it understands both forms.
 
 ---
 
