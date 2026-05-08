@@ -19,7 +19,7 @@ A skill for Claude Code (also works with Cursor) that maintains `MEMORY/` folder
     todo.md         # Todo list (reorganized on each update)
 ```
 
-**Three CLI commands** (type them directly at the prompt):
+**Three CLI commands** (type them at the prompt):
 
 | Command | When | What it does |
 |---------|------|-------------|
@@ -27,17 +27,18 @@ A skill for Claude Code (also works with Cursor) that maintains `MEMORY/` folder
 | `/update-memory` | After subsequent sessions | Append completed/bugs, reorganize todo |
 | `/read-memory` | At session start | Load context from all 3 files |
 
-> You can also say "run /create memory" to your AI — it understands both forms.
+Or just say it in natural language: "创建 MEMORY 文件"、"更新 MEMORY"、"读取 MEMORY".
 
 ---
 
 ## Quick Start / 快速开始
 
 1. Copy this folder to `~/.claude/skills/project-memory/`
-2. In a Claude Code session, use the **Skill** tool to load `project-memory`
-3. At the end of your first project session, say: **"/create memory"**
-4. Next session, start with: **"/read memory"**
-5. End each session with: **"/update memory"**
+2. Copy commands to `~/.claude/commands/`: `cp commands/*.md ~/.claude/commands/`
+3. In a Claude Code session, use the **Skill** tool to load `project-memory`
+4. At the end of your first project session, type: **`/create-memory`**
+5. Next session, start with: **`/read-memory`**
+6. End each session with: **`/update-memory`**
 
 For full command details and file templates → see [SKILL.md](SKILL.md).
 
